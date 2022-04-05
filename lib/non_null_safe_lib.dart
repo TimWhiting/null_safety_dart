@@ -1,7 +1,13 @@
 // @dart=2.11
 
 class MyClass {
-  MyClass();
+  MyClass(this.myString) : assert(myString != null) {
+    property2 = ' $myString $property';
+  }
+  final property = 10;
+  final String myString;
+  String property2; // = ' $myString $property'; cannot do this
+
   int method(
     int requiredArgument, {
     int optionalNamedArgument,
