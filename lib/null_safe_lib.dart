@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 // part files?
 
 // exports
-export 'package:flutter/animation.dart';
+export 'dart:math';
 
 class MyClass {
   MyClass._(this.myString); // No assert(myString != null) because it can't be
@@ -152,12 +152,15 @@ Iterable<int> firstN(int n, [int start = 0]) sync* {
   }
 }
 
-Stream<int> firstNAsyncRecursive<T>(int n, Future<T> Function(int) func,
-    [int start = 0]) async* {
+Stream<int> firstNAsyncRecursive<T>(
+  int n,
+  Future<T> Function(int) func, [
+  int start = 0,
+]) async* {
   for (final i in firstN(n, start)) {
     await func(i);
     yield i;
-    yield* firstNAsyncRecursive(n, func, i - 1);
+    yield* firstNAsyncRecursive(n, func, min(i + 1, n));
   }
 }
 
@@ -169,4 +172,8 @@ Future<void> streamSink() async {
   await for (final i in firstNAsyncRecursive(10, delay, 3)) {
     print(i);
   }
+}
+
+void main() {
+  streamSink();
 }
